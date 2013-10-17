@@ -1,0 +1,28 @@
+<launch>
+
+    <node pkg="nodelet" type="nodelet" name="bigg_trainer" args="standalone bigg_detector/BiGGNodelet" output="screen">
+        <remap from="/bigg_trainer/image" to="/camera/image" />
+        <param name="db_type" value="filesystem" />
+        <param name="connection_string" value="$(find bigg_detector)/database/models" />
+        <rosparam>
+            do_training: True
+            use_rois: False
+            template_radius: 128
+            magnitude_threshold: 200
+            start_level: 2
+            levels: 3
+            fraction_overlap: 0.6
+            models: __tree__
+        </rosparam>
+    </node>
+
+    <node pkg="rein" type="trainer_gui.py" name="bigg_trainer_gui" output="screen">
+        <remap from="start_training" to="bigg_trainer/start_training" />
+        <remap from="train_instance" to="bigg_trainer/train_instance" />
+        <remap from="end_training" to="bigg_trainer/end_training" />
+
+        <remap from="image" to="/camera/image" />
+        <remap from="masks" to="/select3dobj/masks" />
+    </node>
+
+</launch>

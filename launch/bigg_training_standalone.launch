@@ -1,0 +1,21 @@
+<launch>
+
+    <node pkg="nodelet" type="nodelet" name="bigg_trainer" args="standalone bigg_detector/BiGGNodelet" output="screen">
+        <param name="db_type" value="filesystem" />
+        <param name="connection_string" value="$(find bigg_detector)/database/models" />
+        <rosparam>
+            do_training: True
+            use_rois: False
+            template_radius: 128
+            magnitude_threshold: 200
+            start_level: 3
+            levels: 1
+            fraction_overlap: 0.6
+            match_method: 1
+            models: __none__
+            accept_threshold: 0.2
+        </rosparam>
+    </node>
+
+
+</launch>

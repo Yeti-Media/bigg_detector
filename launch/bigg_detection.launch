@@ -1,0 +1,22 @@
+<launch>
+    <node pkg="nodelet" type="nodelet" name="rec_pipeline_manager" args="manager" output="screen" />
+
+    <node pkg="nodelet" type="nodelet" name="bigg" args="load bigg_detector/BiGGNodelet rec_pipeline_manager" output="screen">
+        <remap from="/bigg/image" to="/narrow_stereo/left/image_rect" />
+        <rosparam>
+            use_nn_bigg: False
+            use_rois: False
+            template_radius: 15
+            magnitude_threshold: 200
+            reduction_factor: 8
+            diameter: 8
+            fraction_overlap: 0.6
+            connection_string: "host=wgs36 dbname=recognition_models user=willow password=willow"
+        </rosparam>
+    </node>
+
+    <node pkg="rein" type="detection_displayer" name="detection_displayer" >
+        <remap from="/image" to="/narrow_stereo/left/image_rect" />
+        <remap from="/detections" to="/bigg/detections" />
+    </node>
+</launch>

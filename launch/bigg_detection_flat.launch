@@ -1,0 +1,21 @@
+<launch>
+    <node pkg="nodelet" type="nodelet" name="bigg" args="standalone bigg_detector/BiGGNodelet" output="screen">
+        <remap from="/bigg/image" to="/image" />
+        <param name="db_type" value="filesystem" />
+        <param name="connection_string" value="$(find bigg_detector)/database/models" />
+        <rosparam>
+            use_rois: False
+            template_radius: 128
+            magnitude_threshold: 200
+            start_level: 3
+            levels: 1
+            match_method: 1
+            accept_threshold: 0.20
+        </rosparam>
+    </node>
+    
+    <node pkg="rein" type="detection_displayer" name="detection_displayer_bigg">
+        <remap from="/image" to="/image" />
+        <remap from="/detections" to="/bigg/detections" />
+    </node>
+</launch>

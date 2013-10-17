@@ -1,0 +1,32 @@
+<launch>
+    <node pkg="nodelet" type="nodelet" name="rec_pipeline_manager" args="manager" output="screen"/>
+
+    <node pkg="nodelet" type="nodelet" name="tabletop" args="load rein/TabletopObjects rec_pipeline_manager">
+        <remap from="/tabletop/image" to="/narrow_stereo/left/image_rect" />
+        <remap from="/tabletop/point_cloud" to="/points2" />
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="bigg_trainer" args="load bigg_detector/BiGGNodelet rec_pipeline_manager" output="screen">
+        <remap from="/bigg_trainer/image" to="/narrow_stereo/left/image_rect" />
+        <rosparam>
+            do_training: True
+            use_rois: False
+            template_radius: 15
+            magnitude_threshold: 200
+            reduction_factor: 8
+            diameter: 8
+            fraction_overlap: 0.6
+            connection_string: "host=wgs36 dbname=recognition_models user=willow password=willow"
+        </rosparam>
+    </node>
+
+    <node pkg="rein" type="trainer_gui.py" name="bigg_trainer_gui" output="screen">
+        <remap from="start_training" to="bigg_trainer/start_training" />
+        <remap from="train_instance" to="bigg_trainer/train_instance" />
+        <remap from="end_training" to="bigg_trainer/end_training" />
+
+        <remap from="image" to="/narrow_stereo/left/image_rect" />
+        <remap from="masks" to="/tabletop/masks" />
+    </node>
+
+</launch>

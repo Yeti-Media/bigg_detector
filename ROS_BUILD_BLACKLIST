@@ -1,0 +1,17 @@
+Fails to build on Maverick:
+
+Result: Installing system dependencies of package bigg_detector
+=========================================
+Failed to execute 'rosdep install -y bigg_detector'
+=========================================
+
+=========================================
+Failed to find rosdep libsoci for package bigg_detector on OS:ubuntu version:10.10
+ERROR: ABORTING: Rosdeps [u'libsoci'] could not be resolved
+
+=========================================
+ROS_PACKAGE_PATH = /tmp/ros:/opt/ros/unstable/stacks
+ROS_ROOT = /opt/ros/unstable/ros
+PYTHONPATH = /opt/ros/unstable/ros/core/roslib/src
+
+=========================================

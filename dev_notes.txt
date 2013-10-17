@@ -1,0 +1,12 @@
+Bigg works quite well, especially if one filters out false positives.
+The main issue is scaling: This is an "assymetric feature", that is, only part
+of it's total potentil template is even defined (only where gradients are).
+Thus, the issue is how to compute a distance metric for this so that fast
+nearest neighbor and other techniques may be used for matching?
+
+Some ideas are: Use a Haussdorf metric and/or a hasshing scheme.
+
+FLANN (fast approximate nearest neighbors) has the above issue together with
+it doesn't yet (12/11/2010) handle binary features.
+
+Gary

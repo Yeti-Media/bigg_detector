@@ -1,0 +1,38 @@
+<launch>
+
+    <node pkg="nodelet" type="nodelet" name="bigg_trainer" args="standalone bigg_detector/BiGGNodelet" output="screen">
+        <param name="db_type" value="filesystem" />
+        <param name="connection_string" value="$(find bigg_detector)/database/models" />
+        <rosparam>
+            do_training: True
+            use_rois: False
+            template_radius: 128
+            magnitude_threshold: 200
+            start_level: 2
+            levels: 3
+            fraction_overlap: 0.6
+            models: __tree__
+        </rosparam>
+    </node>
+
+
+    <node pkg="nodelet" type="nodelet" name="pcp" args="standalone rein/PCProjector" output="screen">
+        <remap from="/pcp/point_cloud" to="/extract_objects_indices/output" />
+        <remap from="/pcp/camera_info" to="/narrow_stereo/left/camera_info" />
+    </node>
+
+  <!-- <node pkg="nodelet" type="nodelet" name="grabcut" args="standalone rein/GrabCut" output="screen">
+        <remap from="/grabcut/image" to="/narrow_stereo/left/image_rect" />
+        <remap from="/grabcut/masks" to="/pcp/masks" />
+    </node-->
+
+    <node pkg="rein" type="trainer_gui.py" name="bigg_trainer_gui" output="screen">
+        <remap from="start_training" to="bigg_trainer/start_training" />
+        <remap from="train_instance" to="bigg_trainer/train_instance" />
+        <remap from="end_training" to="bigg_trainer/end_training" />
+
+        <remap from="image" to="/image" />
+        <remap from="masks" to="/pcp/masks" />
+    </node>
+
+</launch>

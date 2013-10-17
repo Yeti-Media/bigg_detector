@@ -1,0 +1,21 @@
+<package>
+  <description brief="bigg_detector">
+    Binarized Gradient Grid (BiGG) detector and ROS wrapper for the rein.
+  </description>
+  <author>Gary Bradski and Marius Muja</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/bigg_detector</url>
+
+  <depend package="nodelet" />
+  <depend package="opencv2" />
+  <depend package="rein" />
+  <depend package="flann" />
+
+  <export>
+    <cpp cflags="-I${prefix}/include -I${prefix}/msg_gen/cpp/include -I${prefix}/msg/cpp -I${prefix}/cfg/cpp" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lbigg_detector" />
+    <nodelet plugin="${prefix}/nodelets.xml" />
+  </export>
+</package>
+
+

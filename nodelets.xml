@@ -1,0 +1,7 @@
+<library path="lib/libbigg_detector">
+    <class name="bigg_detector/BiGGNodelet" type="BiGGNodelet" base_class_type="nodelet::Nodelet"> 
+        <description>
+            BiGGNodelet runs an object detector based on the 'binarized gradient grid' templates.
+        </description>
+    </class>
+</library>

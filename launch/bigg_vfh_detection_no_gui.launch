@@ -1,0 +1,34 @@
+<launch>
+    <node pkg="nodelet" type="nodelet" name="bigg" args="standalone bigg_detector/BiGGNodelet" output="screen">
+        <remap from="/bigg/image" to="/image" />
+        <param name="db_type" value="filesystem" />
+        <param name="connection_string" value="$(find bigg_detector)/database/models" />
+        <rosparam>
+            use_rois: False
+            template_radius: 128
+            magnitude_threshold: 200
+            start_level: 2
+            levels: 3
+            fraction_overlap: 0.6
+        </rosparam>
+    </node>
+    
+    <node pkg="nodelet" type="nodelet" name="vfh_classifier" args="standalone vfh_classifier/VFHClassifier" output="screen">
+        <remap from="~point_cloud"   to="/points2" />
+        <remap from="~input_detections"   to="/bigg/detections" />
+        <param name="dataset_location" value="$(find vfh_cluster_classifier)/data" />
+        <rosparam>
+            use_point_cloud: True
+            use_input_detections: True
+        </rosparam>
+    </node>
+
+    <!--node pkg="rein" type="detection_displayer" name="detection_displayer">
+        <remap from="/image" to="/image" />
+        <remap from="/detections" to="/vfh/detections" />
+    </node>
+    <node pkg="rein" type="detection_displayer" name="detection_displayer_bigg">
+        <remap from="/image" to="/image" />
+        <remap from="/detections" to="/bigg/detections" />
+    </node-->
+</launch>
